@@ -16,6 +16,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import com.bank.entity.KycStatus;
+import com.bank.util.LoanNumberGenerator;
 
 @Service
 @RequiredArgsConstructor
@@ -54,22 +55,21 @@ public class LoanServiceImpl implements LoanService {
         BigDecimal interestRate = BigDecimal.valueOf(10.00)
                 .setScale(2, RoundingMode.HALF_UP);
 
+        BigDecimal principal = request.getPrincipalAmount()
+                .setScale(4, RoundingMode.HALF_UP);
+
         Loan loan = Loan.builder()
+                .loanNumber(LoanNumberGenerator.generate())
                 .customerId(request.getCustomerId())
                 .loanType(request.getLoanType())
-                .principalAmount(
-                        request.getPrincipalAmount()
-                            .setScale(4, RoundingMode.HALF_UP)
-                )
-                /* Temporary:
-                 * interest rate is still coming from the request.
-                 *
-                 * In the next production step, this should be calculated
-                 * by the bank based on loan type/customer/credit profile.
-                 */
+                .principalAmount(principal)
                 .interestRate(interestRate)
                 .tenureMonths(request.getTenureMonths())
+                .outstandingPrincipal(request.getPrincipalAmount())
+                .totalInterest(BigDecimal.ZERO)
+                .totalPayable(request.getPrincipalAmount())
                 .status(LoanStatus.APPLIED)
+                .appliedAt(LocalDateTime.now())
                 .build();
 
         Loan saved = loanRepository.save(loan);
@@ -84,7 +84,8 @@ public class LoanServiceImpl implements LoanService {
     @Override
     @Transactional
     public LoanResponse verifyKyc(Long loanId) {
-        Loan loan = requireStatus(loanId, "APPLIED");
+        Loan loan = requireStatus(loanId, LoanStatus.APPLIED);
+
         Kyc kyc = kycRepository
                 .findByCustomerCustomerId(loan.getCustomerId())
                 .orElseThrow(()
@@ -108,7 +109,7 @@ public class LoanServiceImpl implements LoanService {
     @Override
     @Transactional
     public LoanResponse evaluateCredit(Long loanId) {
-        Loan loan = requireStatus( loanId, "KYC_VERIFIED" );
+        Loan loan = requireStatus( loanId, LoanStatus.KYC_VERIFIED);
         /*
          * Production credit evaluation will eventually check:
          *
@@ -132,8 +133,7 @@ public class LoanServiceImpl implements LoanService {
     @Transactional
     public LoanResponse approve(Long loanId) {
         Loan loan = requireStatus(
-                loanId,
-                "CREDIT_EVALUATED"
+                loanId, LoanStatus.CREDIT_EVALUATED
         );
 
         loan.setStatus(LoanStatus.APPROVED);
@@ -150,8 +150,7 @@ public class LoanServiceImpl implements LoanService {
     public LoanResponse sanction(Long loanId) {
 
         Loan loan = requireStatus(
-                loanId,
-                "APPROVED"
+                loanId, LoanStatus.APPROVED
         );
 
         loan.setStatus(LoanStatus.SANCTIONED);
@@ -178,34 +177,29 @@ public class LoanServiceImpl implements LoanService {
                 .orElseThrow(() ->
                         new LoanNotFoundException(
                                 "Loan not found: " + loanId
-                        ));
+                        )
+                );
 
-        if (!"SANCTIONED".equals(loan.getStatus())) {
-
-            throw new InvalidLoanStateException(
-                    "Loan " + loanId
-                            + " must be SANCTIONED but is "
-                            + loan.getStatus()
-            );
-        }
+        requireStatus(loan, LoanStatus.SANCTIONED);
 
         /*
          * Lock destination account.
          */
 
-        Account account = accountRepository
-                .findByAccountNumberForUpdate( request.getToAccountNumber() )
-                .orElseThrow(() ->
-                        new AccountNotFoundException(
-                                "Account not found: "
-                                        + request.getToAccountNumber()
-                        ));
+        Account account = accountRepository.findByAccountNumberForUpdate(
+                        request.getToAccountNumber()
+                )
+                .orElseThrow(()-> new AccountNotActiveException(
+                        "Account not found: "
+                                +request.getToAccountNumber()
+                ));
 
         /*
          * IMPORTANT: * Loan can only be disbursed into an account owned
          * by the same customer.
          */
-        if (!loan.getCustomerId().equals(account.getCustomerId())) {
+        if (!loan.getCustomerId()
+                .equals(account.getCustomerId())) {
             throw new InvalidLoanStateException(
                     "Disbursement account does not belong "
                             + "to the loan customer"
@@ -295,14 +289,14 @@ public class LoanServiceImpl implements LoanService {
     @Override
     @Transactional
     public LoanResponse reject(Long loanId) {
+
         Loan loan = loanRepository.findByIdForUpdate(loanId)
                 .orElseThrow(()
                         -> new LoanNotFoundException( "Loan not found: " +
                         loanId
                 ));
-        if ("ACTIVE".equals(loan.getStatus())
-                || "CLOSED".equals(loan.getStatus())
-                || "DISBURSED".equals(loan.getStatus())) {
+        if (loan.getStatus() == LoanStatus.ACTIVE
+                || loan.getStatus() == LoanStatus.CLOSED) {
             throw new InvalidLoanStateException(
                     "Cannot reject loan in status: "
                             + loan.getStatus()
@@ -406,7 +400,7 @@ public class LoanServiceImpl implements LoanService {
                                         "Loan not found: "
                                                 + emi.getLoanId()
                                 ));
-        if (!"ACTIVE".equals(loan.getStatus())) {
+        if (loan.getStatus() != LoanStatus.ACTIVE) {
             throw new InvalidLoanStateException(
                     "EMI payment is allowed only for ACTIVE loans"
             );
@@ -568,19 +562,25 @@ public class LoanServiceImpl implements LoanService {
     // ============================================================
 
     private void generateEmiSchedule(Loan loan) {
+        int months = loan.getTenureMonths();
+
         BigDecimal principal = loan.getPrincipalAmount()
                 .setScale(10, RoundingMode.HALF_UP);
+
         BigDecimal annualRate = loan.getInterestRate()
-                .divide( BigDecimal.valueOf(100), 10, RoundingMode.HALF_UP );
-        BigDecimal monthlyRate = annualRate.divide( BigDecimal.valueOf(12), 10, RoundingMode.HALF_UP );
-        int months = loan.getTenureMonths();
+                .divide( BigDecimal.valueOf(100), 10, RoundingMode.HALF_UP
+                );
+
+        BigDecimal monthlyRate = annualRate
+                .divide( BigDecimal.valueOf(12), 10, RoundingMode.HALF_UP );
+
         BigDecimal emiAmount;
 
         /*
          * Zero-interest loan.
-         */ if (monthlyRate.signum() == 0) {
+         */ if (monthlyRate.compareTo(BigDecimal.ZERO) == 0) {
             emiAmount = principal.divide(
-                    BigDecimal.valueOf(months), 2, RoundingMode.HALF_UP );
+                    BigDecimal.valueOf(months), 4, RoundingMode.HALF_UP );
         } else {
             /*
              * EMI formula:
@@ -589,24 +589,55 @@ public class LoanServiceImpl implements LoanService {
              * ----------------
              * (1+r)^n - 1
              */
-            double rate = monthlyRate.doubleValue();
-            double p = principal.doubleValue();
-            double power = Math.pow( 1 + rate, months );
-            double emi = p * rate * power / (power - 1);
-            emiAmount = BigDecimal.valueOf(emi)
-                    .setScale( 2, RoundingMode.HALF_UP );
+            BigDecimal onePlusRate = BigDecimal.ONE.add(monthlyRate);
+//            double rate = monthlyRate.doubleValue();
+//            double p = principal.doubleValue();
+            BigDecimal power = onePlusRate.pow(months);
+
+            emiAmount = principal
+                    .multiply(monthlyRate)
+                    .multiply(power)
+                    .divide( power.subtract(BigDecimal.ONE),
+                            4,
+                            RoundingMode.HALF_UP
+                    );
         }
 
+        BigDecimal outstanding = principal;
+
         LocalDate firstDueDate = LocalDate.now().plusMonths(1);
+
         for (int i = 0; i < months; i++) {
-            loanEmiRepository.save( LoanEmi.builder()
+            BigDecimal interestComponent = outstanding
+                    .multiply(monthlyRate)
+                    .setScale(4, RoundingMode.HALF_UP);
+
+            BigDecimal principalComponent = emiAmount
+                    .subtract(interestComponent)
+                    .setScale(4, RoundingMode.HALF_UP);
+            if (i == months) {
+                principalComponent = outstanding;
+                emiAmount = principalComponent
+                        .add(interestComponent)
+                        .setScale(4, RoundingMode.HALF_UP);
+            }
+
+            LoanEmi emi = LoanEmi.builder()
                     .loanId(loan.getLoanId())
-                    .dueDate( firstDueDate.plusMonths(i)
-                    )
+                    .emiNumber(i)
+                    .dueDate(firstDueDate.plusMonths(i - 1))
                     .emiAmount(emiAmount)
+                    .principalComponent(principalComponent)
+                    .interestComponent(interestComponent)
+                    .paidAmount(BigDecimal.ZERO)
                     .status("DUE")
-                    .build()
-            );
+                    .build();
+
+            loanEmiRepository.save(emi);
+
+            outstanding = outstanding
+                    .subtract(principalComponent)
+                    .setScale(4, RoundingMode.HALF_UP);
         }
     }
 
@@ -614,24 +645,32 @@ public class LoanServiceImpl implements LoanService {
     // STATE VALIDATION
     // ============================================================
 
-    private Loan requireStatus( Long loanId, String expectedStatus ) {
+    private Loan requireStatus( Long loanId, LoanStatus expectedStatus ) {
         Loan loan = loanRepository.findByIdForUpdate(loanId)
                 .orElseThrow(() ->
                         new LoanNotFoundException(
                                 "Loan not found: " + loanId
-                        ));
-        if (!expectedStatus.equals(loan.getStatus())) {
+                        )
+                );
+        requireStatus(loan, expectedStatus);
+
+        return loan;
+    }
+
+    private void requireStatus(Loan loan,
+                               LoanStatus expectedStatus){
+
+        if (loan.getStatus() != expectedStatus) {
 
             throw new InvalidLoanStateException(
                     "Loan "
-                            + loanId
+                            + loan.getLoanId()
                             + " must be "
                             + expectedStatus
                             + " but is "
                             + loan.getStatus()
             );
         }
-        return loan;
     }
 
     private LoanResponse toResponse(Loan l) {
