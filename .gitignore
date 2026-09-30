@@ -1,0 +1,19 @@
+# Backend
+backend/banking-service/target/
+backend/banking-service/.mvn/
+*.class
+
+# Frontend
+frontend/banking-web/node_modules/
+frontend/banking-web/dist/
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# OS
+.DS_Store
+
+# Env
+.env
