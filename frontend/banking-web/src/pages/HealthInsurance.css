@@ -1,0 +1,42 @@
+/* quote card in the hero */
+.hi-quote {
+  padding: 26px;
+  background: #fff;
+  border: 1px solid #dfe5ec;
+  border-radius: 16px;
+  box-shadow: 0 18px 40px rgba(18, 58, 120, 0.18);
+}
+.hi-quote h2 { margin: 0 0 16px; font-size: 20px; color: #0f2a52; }
+
+.hi-row { margin-bottom: 14px; }
+.hi-row.two { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.hi-quote label { display: block; font-size: 13px; font-weight: 600; color: #26323f; }
+.hi-quote input, .hi-quote select {
+  display: block; width: 100%; box-sizing: border-box; margin-top: 6px;
+  padding: 11px 12px; font: inherit; font-size: 15px; color: #14202e;
+  background: #fff; border: 1px solid #aeb8c4; border-radius: 8px;
+}
+.hi-quote input:focus, .hi-quote select:focus { outline: 2px solid #1f4fd8; outline-offset: 1px; border-color: #1f4fd8; }
+.hi-quote label.err input { border-color: #d11a3a; }
+.hi-err { display: block; margin-top: 4px; font-size: 12px; font-weight: 400; color: #d11a3a; }
+
+.hi-result {
+  display: grid; gap: 2px; margin: 4px 0 6px; padding: 14px 16px;
+  text-align: center; border-radius: 10px; background: #edf3ff;
+}
+.hi-result small { color: #1f4fd8; font-size: 13px; }
+.hi-result strong { font-size: 30px; color: #123a78; }
+.hi-result strong span { font-size: 14px; font-weight: 500; color: #5b6877; }
+.hi-result em { font-style: normal; font-size: 13px; color: #5b6877; }
+.hi-note { margin: 8px 0 16px; font-size: 12px; color: #6b7785; }
+
+.hi-submit { width: 100%; padding: 13px; font-size: 16px; }
+.hi-sent {
+  display: grid; gap: 4px; padding: 14px 16px; border-radius: 10px;
+  background: #eaf7ef; border: 1px solid #b7e0c6; color: #17603a;
+}
+
+/* "not covered" list uses crosses */
+.hi-cross li::before { content: "✕"; background: #fdecee; color: #d11a3a; }
+
+@media (max-width: 520px) { .hi-row.two { grid-template-columns: 1fr; } }

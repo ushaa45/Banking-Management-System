@@ -1,0 +1,157 @@
+/* ===== Login dropdown ===== */
+.lm {
+    position: relative;
+    display: inline-block;
+}
+
+/* red LOGIN button */
+.lm .lm-button {
+    background: #e4262c;
+    color: #fff;
+    border: 0;
+    border-radius: 6px;
+    padding: 10px 18px;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 13px;
+    line-height: 1;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+.lm .lm-button:hover { background: #c81d23; }
+.lm .lm-button:focus-visible { outline: 3px solid #ffb3b6; outline-offset: 2px; }
+.lm .lm-caret { margin-left: 4px; font-size: 11px; }
+
+/* white floating panel */
+.lm .lm-panel {
+    position: absolute;
+    right: 0;
+    top: 100%;
+    margin-top: 10px;
+    width: 370px;
+    max-width: calc(100vw - 24px);
+    max-height: 540px;
+    overflow-y: auto;
+    background: #fff;
+    color: #111;
+    text-align: left;
+    font-family: inherit;
+    border-radius: 4px;
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.25);
+    z-index: 1000;
+}
+
+/* small arrow pointing at the button */
+.lm:has(.lm-panel)::after {
+    content: "";
+    position: absolute;
+    right: 28px;
+    top: calc(100% + 3px);
+    border: 7px solid transparent;
+    border-top: 0;
+    border-bottom-color: #fff;
+    z-index: 1001;
+}
+
+/* sign-in form */
+.lm .lm-form {
+    padding: 18px 14px 16px;
+    border-bottom: 1px solid #e6e9ee;
+    display: grid;
+    gap: 12px;
+}
+.lm .lm-form-title {
+    margin: 0;
+    font-family: inherit;
+    font-size: 17px;
+    font-weight: 700;
+    color: #111;
+}
+.lm .lm-form label {
+    display: grid;
+    gap: 4px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #333;
+}
+.lm .lm-form input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 12px;
+    border: 1px solid #cfd6df;
+    border-radius: 6px;
+    font: inherit;
+    font-size: 14px;
+    background: #fff;
+    color: #111;
+}
+.lm .lm-form input:focus {
+    outline: 2px solid #0a4a9e;
+    outline-offset: 1px;
+    border-color: #0a4a9e;
+}
+.lm .lm-error { margin: 0; font-size: 13px; color: #c81d23; }
+.lm .lm-submit {
+    background: #e4262c;
+    color: #fff;
+    border: 0;
+    border-radius: 6px;
+    padding: 11px;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+}
+.lm .lm-submit:hover:not(:disabled) { background: #c81d23; }
+.lm .lm-submit:disabled { opacity: 0.6; cursor: wait; }
+
+/* list items */
+.lm .lm-item {
+    padding: 16px 14px 14px;
+    border-bottom: 1px solid #e6e9ee;
+}
+.lm .lm-item:last-child { border-bottom: 0; }
+
+.lm .lm-title {
+    display: block;
+    font-weight: 700;
+    font-size: 15px;
+    color: #111;
+    text-decoration: none;
+}
+.lm a.lm-title::after,
+.lm .lm-link::after {
+    content: "›";
+    color: #e4262c;
+    font-weight: 900;
+    margin-left: 6px;
+    font-size: 17px;
+}
+
+.lm .lm-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 18px;
+    margin-top: 6px;
+}
+.lm .lm-link {
+    font-size: 13px;
+    font-weight: 700;
+    color: #0a4a9e;
+    text-decoration: none;
+}
+.lm a.lm-title:hover,
+.lm .lm-link:hover { color: #e4262c; text-decoration: none; }
+
+/* phones: panel becomes a full-width sheet under the header */
+@media (max-width: 480px) {
+    .lm .lm-panel {
+        position: fixed;
+        left: 12px;
+        right: 12px;
+        top: 64px;
+        width: auto;
+        max-height: 70vh;
+    }
+    .lm:has(.lm-panel)::after { display: none; }
+}

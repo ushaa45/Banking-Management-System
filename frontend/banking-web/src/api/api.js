@@ -13,6 +13,9 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
+// Pages where a 401 means "wrong password", not "session expired".
+const publicAuthPages = ["/login", "/netbanking", "/register"];
+
 // If a token expires/is invalid, the backend returns 401 - bounce to login
 // rather than leaving the UI stuck showing failed requests.
 api.interceptors.response.use(
@@ -21,9 +24,7 @@ api.interceptors.response.use(
     const status = error.response?.status;
 
     if (
-      status === 401  &&
-      window.location.pathname !== "/login"
-    ) {
+      status === 401  && !publicAuthPages.includes(window.location.pathname)) {
       localStorage.removeItem("bank_jwt");
       window.location.href = "/login";
     }
@@ -35,6 +36,7 @@ api.interceptors.response.use(
 export const AuthApi = {
   login: (payload) => api.post("/auth/login", payload),
   register: (payload) => api.post("/auth/register", payload),
+  signUp: (payload) => api.post("/auth/signup", payload),
 };
 
 export const CustomerApi = {
@@ -79,6 +81,32 @@ export const AccountApi = {
   open: (payload) => api.post("/accounts", payload),
   freeze: (accountNumber) => api.post(`/accounts/${accountNumber}/freeze`),
   close: (accountNumber) => api.post(`/accounts/${accountNumber}/close`),
+
+  // All accounts = every customer's accounts combined (no list-all endpoint on the backend)
+  list: async () => {
+    const custRes = await api.get("/customers");
+    const customers = Array.isArray(custRes.data)
+      ? custRes.data
+      : custRes.data?.content ?? [];
+
+    const results = await Promise.allSettled(
+      customers.map((c) => {
+        const id = c.customerId ?? c.id;
+        return api.get(`/customers/${id}/accounts`).then((res) => {
+          const rows = Array.isArray(res.data) ? res.data : res.data?.content ?? [];
+          return rows.map((a) => ({
+            ...a,
+            customerName:
+              c.fullName ?? c.name ?? [c.firstName, c.lastName].filter(Boolean).join(" "),
+          }));
+        });
+      })
+    );
+
+    return {
+      data: results.filter((r) => r.status === "fulfilled").flatMap((r) => r.value),
+    };
+  },
 };
 
 export const TransactionApi = {

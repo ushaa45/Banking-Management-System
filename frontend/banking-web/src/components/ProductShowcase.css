@@ -1,0 +1,250 @@
+.ps { padding:0 0 64px; background: #fff; }
+
+/* ---------- search bar ---------- */
+.ps-search {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: 1000px;
+  margin: 0 auto 36px;
+  padding: 10px 14px;
+    background:
+    linear-gradient(#fff, #fff) padding-box,
+    linear-gradient(
+      120deg,
+      #4b84f0,
+      #8b5cf6,
+      #00c6ff,
+      #4b84f0
+    ) border-box;
+  border: 3px solid transparent;
+  border-radius: 14px;
+  box-shadow: 0 6px 18px rgba(75, 132, 240, 0.25);
+  background-size: 100% 100%, 300% 300%;
+  animation: borderFlow 4s ease infinite;
+
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+@keyframes borderFlow {
+  0% {
+    background-position: 0% 50%, 0% 50%;
+  }
+  50% {
+    background-position: 0% 50%, 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%, 0% 50%;
+  }
+}
+
+.ps-search:focus-within {
+  box-shadow:
+    0 0 0 4px rgba(75, 132, 240, 0.12),
+    0 0 22px rgba(75, 132, 240, 0.4);
+  transform: translateY(-2px);
+}
+.ps-search-badge {
+  flex: none;
+  padding-right: 12px;
+  border-right: 1px solid #d5dbe5;
+  font-weight: 800;
+  color: #123a78;
+}
+.ps-search input {
+  flex: 1;
+  border: 0;
+  outline: 0;
+  font: inherit;
+  font-size: 16px;
+  color: #14202e;
+  background: transparent;
+}
+.ps-search button {
+  border: 0;
+  background: none;
+  font-size: 22px;
+  color: #aab4c3;
+  cursor: pointer;
+}
+.ps-search button:hover { color: #123a78; }
+
+/* ---------- title + tabs ---------- */
+.ps-title {
+  margin: 0 0 22px;
+  text-align: center;
+  font-family: revert;
+  font-size: clamp(33px, 4vw, 44px);
+  font-weight: 800;
+  color: #0a0d11;
+}
+.ps-tabs {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  max-width: 800px;
+  margin: 0 auto 36px;
+  border-bottom: 1px solid #dfe5ec;
+}
+
+.ps-img {
+  position: absolute;
+  right: 16px;
+  bottom: 0;
+  height: 78%;
+  max-width: 55%;
+  object-fit: contain;
+  pointer-events: none;
+  filter: drop-shadow(0 10px 14px rgba(0, 0, 0, 0.2));
+}
+
+@media (max-width: 900px) {
+  .ps-img { height: 70%; }
+}
+
+
+.ps-tabs button {
+  padding: 10px 16px;
+  margin-bottom: -1px;
+  background: none;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  font: inherit;
+  font-size: 17px;
+  color: #26323f;
+  cursor: pointer;
+}
+.ps-tabs button:hover { color: #123a78; }
+.ps-tabs button.active {
+  color: #123a78;
+  border-bottom-color: #123a78;
+}
+
+/* ---------- carousel ---------- */
+.ps-stage {
+  display: grid;
+  grid-template-columns: 1fr 1.15fr 1fr;
+  gap: 28px;
+  align-items: center;
+}
+
+.ps-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+  padding: 40px 36px;
+  min-height: 340px;
+  color: #0f1c2e;
+  transition: transform 0.3s ease, opacity 0.3s ease, box-shadow 0.3s ease;
+  animation: ps-in 0.35s ease;
+}
+@keyframes ps-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.ps-card h3 { margin: 0 0 12px; font-size: 24px; font-size-adjust: from-font;}
+.ps-card p { margin: 0 0 22px; max-width: 260px; font-size: 15px; }
+
+.ps-card.is-center {
+  min-height: 395px;
+  min-width: 600px;
+  z-index: 1;
+  box-shadow: 0 14px 34px rgba(18, 58, 120, 0.28);
+}
+.ps-card.is-side {
+  opacity: 0.55;
+  filter: saturate(0.55);
+  transform: scale(0.97);
+  cursor: pointer;
+  min-width: 530px;
+}
+.ps-card.is-side:hover { opacity: 0.75; }
+
+/* full-card banner image: fills the card, buttons stay on top */
+.ps-card.is-banner .ps-img {
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+  object-position: right center;
+  filter: none;
+}
+.ps-card.is-banner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(90deg, rgba(255,255,255,0.75) 0%, rgba(255,255,255,0.35) 45%, transparent 70%);
+  pointer-events: none;
+}
+.ps-card.is-banner h3,
+.ps-card.is-banner p,
+.ps-card.is-banner .ps-actions {
+  position: relative;
+  z-index: 2;
+}
+/* white image background becomes the card's theme colour */
+.ps-card.is-blend .ps-img { mix-blend-mode: multiply; }
+.ps-card.is-blend::before { display: none; }   /* the white fade would wash out the colour */
+/* themes */
+.theme-sky   { background: linear-gradient(135deg, #8dbbff, #6aa4ff); }
+.theme-sand  { background: linear-gradient(135deg, #f7e3c4, #f1cf9a); }
+.theme-mint  { background: linear-gradient(135deg, #bdebd3, #8ddbb5); }
+.theme-lilac { background: linear-gradient(135deg, #d9d2ff, #b9aaff); }
+
+/* illustration (emoji) */
+.ps-art {
+  position: absolute;
+  right: 20px;
+  bottom: 12px;
+  font-size: 130px;
+  line-height: 1;
+  filter: drop-shadow(0 8px 10px rgba(0, 0, 0, 0.15));
+  pointer-events: none;
+}
+
+/* buttons */
+.ps-actions { display: flex; gap: 12px; flex-wrap: wrap; position: relative; z-index: 1; }
+.ps-btn {
+  padding: 10px 18px;
+  border-radius: 6px;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.ps-btn.primary { background: #123a78; color: #fff; border: 1px solid #123a78; }
+.ps-btn.primary:hover { background: #0b2a5a; }
+.ps-btn.ghost { background: transparent; color: #123a78; border: 1px solid #123a78; }
+.ps-btn.ghost:hover { background: rgba(255, 255, 255, 0.4); }
+.is-side .ps-btn { pointer-events: none; }
+
+/* arrows */
+.ps-controls {
+  display: flex;
+  justify-content: center;
+  gap: 22px;
+  margin-top: 34px;
+}
+.ps-controls button {
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: 50%;
+  background: #123a78;
+  color: #fff;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+}
+.ps-controls button:hover { background: #0b2a5a; }
+.ps-controls button:focus-visible { outline: 3px solid #9cc0ff; outline-offset: 2px; }
+
+/* ---------- responsive ---------- */
+@media (max-width: 900px) {
+  .ps-stage { grid-template-columns: 1fr; }
+  .ps-card.is-side { display: none; }
+  .ps-card.is-center { min-height: 340px; }
+  .ps-art { font-size: 100px; }
+}

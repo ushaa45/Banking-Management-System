@@ -1,0 +1,23 @@
+.cu-grid { display: grid; gap: 14px; }
+.cu-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 18px;
+  border: 2px solid #dfe5ec;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+.cu-option:hover { border-color: #9cb6e8; }
+.cu-option.selected { border-color: #1f4fd8; background: #f1f5ff; }
+.cu-option input { position: absolute; opacity: 0; pointer-events: none; }
+.cu-option:has(input:focus-visible) { outline: 3px solid #9cc0ff; outline-offset: 2px; }
+.cu-option strong { display: block; font-size: 17px; }
+.cu-option small { display: block; margin-top: 2px; color: #5b6877; font-size: 13px; }
+.cu-option em { flex: none; text-align: right; font-style: normal; font-size: 12px; color: #5b6877; }
+.cu-option em b { font-size: 16px; color: #123a78; }
+
+.cu-sub { margin: 24px 0 14px; font-size: 16px; color: #0f2a52; }
+.cu-hint { margin: 6px 0 0; font-size: 12px; color: #6b7785; }

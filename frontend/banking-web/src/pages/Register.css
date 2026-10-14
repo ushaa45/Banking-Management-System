@@ -1,0 +1,78 @@
+/* field spacing */
+.nb-panel form label.rg-spaced { margin-top: 18px; }
+
+/* validation */
+.nb-panel form input.rg-invalid {
+  border-color: #d11a3a;
+}
+.nb-panel form input.rg-invalid:focus {
+  outline-color: #d11a3a;
+}
+.rg-field-error {
+  margin: 6px 0 0;
+  font-size: 13px;
+  color: #d11a3a;
+}
+
+/* captcha row: [code image + tools] [input] */
+.rg-captcha-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-top: 26px;
+  align-items: start;
+}
+.rg-captcha-box { display: flex; align-items: center; gap: 12px; }
+.rg-canvas {
+  display: block;
+  width: 160px;
+  height: 58px;
+  border: 1px solid #c9d1da;
+  border-radius: 6px;
+  background: #fff;
+}
+.rg-captcha-tools { display: grid; gap: 10px; }
+.rg-icon-btn {
+  width: 32px;
+  height: 32px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: #1f4fd8;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+}
+.rg-icon-btn:hover { background: #eef2fd; }
+
+/* secondary button (Back to Login) */
+.rg-outline-btn {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  margin-top: 14px;
+  padding: 13px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1f4fd8;
+  background: #fff;
+  border: 1px solid #1f4fd8;
+  border-radius: 6px;
+}
+.rg-outline-btn:hover { background: #f1f5ff; }
+
+/* success */
+.rg-success {
+  padding: 20px;
+  border-radius: 8px;
+  background: #eaf7ef;
+  border: 1px solid #b7e0c6;
+  color: #17603a;
+}
+.rg-success p { margin: 6px 0 0; }
+
+@media (max-width: 480px) {
+  .rg-captcha-row { grid-template-columns: 1fr; }
+}

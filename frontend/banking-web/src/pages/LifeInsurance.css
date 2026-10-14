@@ -1,0 +1,425 @@
+
+.life-page {
+  --life-blue: #0755a5;
+  --life-navy: #092b50;
+  --life-light: #eff6ff;
+  --life-text: #25364b;
+  color: var(--life-text);
+  background: #fff;
+  font-family: inherit;
+  padding-bottom: 48px;
+}
+
+.life-breadcrumb {
+  max-width: 1200px;
+  margin: auto;
+  padding: 22px 24px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  color: #64748b;
+  font-size: 13px;
+}
+
+.life-breadcrumb strong {
+  color: var(--life-navy);
+}
+
+.life-hero {
+  max-width: 1200px;
+  min-height: 390px;
+  margin: 0 auto 76px;
+  padding: 56px 64px;
+  border-radius: 24px;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  align-items: center;
+  gap: 30px;
+  background:
+    radial-gradient(circle at 85% 30%, #d2e7ff 0, transparent 32%),
+    linear-gradient(115deg, #f0f7ff, #e1efff 60%, #f7fbff);
+}
+
+.life-hero-content {
+  max-width: 600px;
+}
+
+.life-eyebrow {
+  display: inline-block;
+  color: var(--life-blue);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  margin-bottom: 14px;
+}
+
+.life-hero h1 {
+  margin: 0 0 18px;
+  color: var(--life-navy);
+  font-size: clamp(32px, 4vw, 48px);
+  line-height: 1.13;
+  letter-spacing: -1.3px;
+}
+
+.life-hero p {
+  max-width: 520px;
+  color: #52647a;
+  font-size: 16px;
+  line-height: 1.8;
+  margin: 0 0 26px;
+}
+
+.life-primary-btn {
+  border: 0;
+  border-radius: 8px;
+  padding: 14px 22px;
+  background: var(--life-blue);
+  color: white;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.life-primary-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px #0755a533;
+}
+
+.life-primary-btn span {
+  margin-left: 12px;
+}
+
+.life-hero-art {
+  min-height: 250px;
+  display: grid;
+  place-items: center;
+  position: relative;
+}
+
+.life-art-circle {
+  width: 230px;
+  height: 230px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-size: 100px;
+  background: linear-gradient(135deg, #8fc5ff, #347cc8);
+  box-shadow: 0 20px 60px #2367a32b;
+}
+
+.life-art-card {
+  position: absolute;
+  right: 0;
+  bottom: 5px;
+  width: 205px;
+  padding: 18px;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 14px 45px #1c47731c;
+}
+
+.life-art-card span {
+  color: #64748b;
+  font-size: 10px;
+  letter-spacing: 1px;
+}
+
+.life-art-card strong {
+  display: block;
+  color: var(--life-navy);
+  margin-top: 6px;
+}
+
+.life-art-people {
+  margin-top: 8px;
+  font-size: 32px;
+}
+
+.life-types,
+.life-benefits,
+.life-faq {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px 76px;
+  scroll-margin-top: 30px;
+}
+
+.life-section-heading {
+  text-align: center;
+  max-width: 680px;
+  margin: 0 auto 34px;
+}
+
+.life-section-heading h2 {
+  margin: 0 0 12px;
+  color: var(--life-navy);
+  font-size: clamp(27px, 3vw, 36px);
+  letter-spacing: -0.7px;
+}
+
+.life-section-heading p {
+  color: #64748b;
+  line-height: 1.7;
+  margin: 0;
+}
+
+.life-category-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.life-category-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 28px 24px;
+  min-height: 285px;
+  border: 1px solid #e0e9f3;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 5px 22px #183b6410;
+  transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+}
+
+.life-category-card:hover {
+  transform: translateY(-6px);
+  border-color: #a9cffa;
+  box-shadow: 0 16px 35px #183b6417;
+}
+
+.life-category-icon {
+  width: 54px;
+  height: 54px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  background: var(--life-light);
+  font-size: 27px;
+  margin-bottom: 20px;
+}
+
+.life-category-card h3,
+.life-benefit-card h3 {
+  color: var(--life-navy);
+  font-size: 18px;
+  line-height: 1.4;
+  margin: 0 0 12px;
+}
+
+.life-category-card p,
+.life-benefit-card p {
+  color: #64748b;
+  font-size: 14px;
+  line-height: 1.75;
+  margin: 0 0 20px;
+}
+
+.life-link-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: auto;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--life-blue);
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.life-link-btn span {
+  transition: transform 0.2s;
+}
+
+.life-link-btn:hover span {
+  transform: translateX(4px);
+}
+
+.life-benefits {
+  padding-top: 62px;
+  padding-bottom: 80px;
+  max-width: none;
+  background: #f7faff;
+}
+
+.life-benefits > .life-section-heading,
+.life-benefit-grid {
+  max-width: 1152px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.life-benefit-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.life-benefit-card {
+  padding: 26px;
+  border-radius: 14px;
+  background: #fff;
+  border: 1px solid #e5edf6;
+}
+
+.life-benefit-card > span {
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  margin-bottom: 18px;
+  border-radius: 12px;
+  background: var(--life-light);
+  font-size: 23px;
+}
+
+.life-faq-list {
+  max-width: 850px;
+  margin: auto;
+  border-top: 1px solid #e2e8f0;
+}
+
+.life-faq-item {
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.life-faq-item > button {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  padding: 22px 4px;
+  border: 0;
+  background: transparent;
+  color: var(--life-navy);
+  text-align: left;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.life-faq-item > button span {
+  color: var(--life-blue);
+  font-size: 24px;
+}
+
+.life-faq-item > p {
+  margin: 0;
+  padding: 0 30px 22px 4px;
+  color: #64748b;
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+.life-disclaimer {
+  max-width: 1152px;
+  margin: 0 auto;
+  padding: 24px;
+  border-radius: 12px;
+  background: #f7f9fc;
+  color: #64748b;
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+.life-disclaimer strong {
+  color: var(--life-navy);
+}
+
+.life-disclaimer p {
+  margin-bottom: 0;
+}
+
+@media (max-width: 900px) {
+  .life-hero {
+    margin: 0 20px 60px;
+    padding: 40px 32px;
+    grid-template-columns: 1fr 0.7fr;
+  }
+
+  .life-category-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .life-benefit-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .life-disclaimer {
+    margin: 0 20px;
+  }
+}
+
+@media (max-width: 600px) {
+  .life-breadcrumb {
+    padding: 16px 20px;
+  }
+
+  .life-hero {
+    display: block;
+    padding: 34px 24px;
+    margin: 0 14px 52px;
+    border-radius: 18px;
+  }
+
+  .life-hero h1 {
+    font-size: 34px;
+  }
+
+  .life-hero-art {
+    min-height: 220px;
+    margin-top: 20px;
+  }
+
+  .life-art-circle {
+    width: 175px;
+    height: 175px;
+    font-size: 76px;
+  }
+
+  .life-art-card {
+    right: 0;
+    width: 165px;
+    padding: 13px;
+  }
+
+  .life-types,
+  .life-benefits,
+  .life-faq {
+    padding-left: 18px;
+    padding-right: 18px;
+    padding-bottom: 54px;
+  }
+
+  .life-category-grid,
+  .life-benefit-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .life-category-card {
+    min-height: 240px;
+  }
+
+  .life-benefits {
+    padding-top: 48px;
+  }
+
+  .life-disclaimer {
+    margin: 0 18px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .life-page *,
+  .life-page *::before,
+  .life-page *::after {
+    scroll-behavior: auto !important;
+    transition: none !important;
+  }
+}

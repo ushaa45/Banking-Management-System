@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import loanApi from "../api/loanApi";
 
@@ -92,11 +92,47 @@ function Loans() {
   const [form, setForm] = useState(initialForm);
   const [loans, setLoans] = useState([]);
 
+  const [hasLoadedLoans, setHasLoadedLoans] = useState(false);
+
   const [loading, setLoading] = useState(false);
   const [loadingLoans, setLoadingLoans] = useState(false);
 
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+
+
+  // ADD THIS CODE BELOW YOUR STATE DECLARATIONS 
+  const summary = useMemo(() => ({
+    total: loans.length,
+    active: loans.filter((loan) => loan.status === "ACTIVE"
+    ).length,
+
+    pending: loans.filter(
+      (loan) =>
+        !["ACTIVE", "CLOSED", "REJECTED"].includes(loan.status)
+    ).length, principal: loans.reduce(
+      (sum, loan) =>
+        sum + Number(loan.principalAmount || 0),
+      0),
+  }),
+    [loans]);
+
+  const estimatedEmi = useMemo(() => {
+    const principal = Number(form.principalAmount);
+    const months = Number(form.tenureMonths);
+
+    if (!principal || principal < 1000 || !months) return null;
+
+    // Indicative estimate at 10% annual interest.
+    const monthlyRate = 0.10 / 12;
+    const factor = Math.pow(1 + monthlyRate, months);
+
+    return (
+      (principal * monthlyRate * factor) /
+      (factor - 1)
+    );
+  }, [form.principalAmount, form.tenureMonths]);
+
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -121,10 +157,12 @@ function Loans() {
       const data = await loanApi.getByCustomer(form.customerId);
 
       setLoans(Array.isArray(data) ? data : []);
+      setHasLoadedLoans(true);
     } catch (err) {
       console.error(err);
 
       setLoans([]);
+      setHasLoadedLoans(false);
 
       setError(
         err.response?.data?.message ||
@@ -156,7 +194,10 @@ function Loans() {
         `Loan #${createdLoan.loanId} has been successfully submitted.`
       );
 
-      setForm(initialForm);
+      setForm({
+        ...initialForm,
+        customerId: String(createdLoan.customerId || form.customerId),
+      });
 
       if (createdLoan.customerId) {
         const data = await loanApi.getByCustomer(
@@ -164,6 +205,7 @@ function Loans() {
         );
 
         setLoans(Array.isArray(data) ? data : []);
+        setHasLoadedLoans(true);
       }
     } catch (err) {
       console.error(err);
@@ -218,6 +260,56 @@ function Loans() {
             </div>
           </div>
         </div>
+
+        {/* =====================================================
+
+        =====================================================*/}
+        <div className="mb-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          {[
+            {
+              label: "Total Loans",
+              value: hasLoadedLoans ? summary.total : "—",
+              icon: "▤",
+            },
+            {
+              label: "Active Loans",
+              value: hasLoadedLoans ? summary.active : "—",
+              icon: "↗",
+            },
+            {
+              label: "Applications in Progress",
+              value: hasLoadedLoans ? summary.pending : "—",
+              icon: "◷",
+            },
+            {
+              label: "Total Principal",
+              value: hasLoadedLoans
+                ? formatMoney(summary.principal)
+                : "—",
+              icon: "₹",
+            },
+          ].map((item) => (
+            <div
+              key={item.label}
+              className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"
+            >
+              <div className="flex items-center justify-between">
+                <p className="text-sm font-medium text-slate-500">
+                  {item.label}
+                </p>
+
+                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 font-bold text-blue-700">
+                  {item.icon}
+                </span>
+              </div>
+
+              <p className="mt-3 text-2xl font-bold text-slate-900">
+                {item.value}
+              </p>
+            </div>
+          ))}
+        </div>
+
 
         {/* =====================================================
             ALERTS
@@ -390,7 +482,7 @@ function Loans() {
           {/* ===================================================
               QUICK INFO
           ==================================================== */}
-          <div className="rounded-3xl bg-slate-900 p-6 text-white shadow-sm">
+          {/*<div className="rounded-3xl bg-slate-900 p-6 text-white shadow-sm">
             <p className="text-sm font-semibold text-blue-300">
               Loan Information
             </p>
@@ -436,6 +528,51 @@ function Loans() {
                 </p>
               </div>
             </div>
+          </div> */}
+
+          <div className="rounded-3xl bg-slate-900 p-6 text-white shadow-sm">
+            <p className="text-sm font-semibold text-blue-300">
+              LOAN CALCULATOR
+            </p>
+
+            <h2 className="mt-2 text-2xl font-bold">
+              Plan your repayment
+            </h2>
+
+            <p className="mt-2 text-sm leading-6 text-slate-300">
+              Estimate your monthly payment before applying.
+            </p>
+
+            <div className="mt-6 rounded-2xl border border-white/10 bg-white/5 p-5">
+              <p className="text-sm text-slate-300">
+                Estimated monthly EMI
+              </p>
+
+              <p className="mt-2 text-3xl font-bold">
+                {estimatedEmi == null
+                  ? "—"
+                  : formatMoney(estimatedEmi)}
+              </p>
+
+              <div className="mt-4 flex justify-between border-t border-white/10 pt-3 text-sm">
+                <span className="text-slate-400">Illustrative rate</span>
+                <span className="font-semibold">10% p.a.</span>
+              </div>
+
+              <div className="mt-2 flex justify-between text-sm">
+                <span className="text-slate-400">Tenure</span>
+                <span className="font-semibold">
+                  {form.tenureMonths
+                    ? `${form.tenureMonths} months`
+                    : "Not selected"}
+                </span>
+              </div>
+            </div>
+
+            <p className="mt-4 text-xs leading-5 text-slate-400">
+              This is an estimate, not a loan offer. Actual EMI depends
+              on the final interest rate and loan terms.
+            </p>
           </div>
         </div>
 

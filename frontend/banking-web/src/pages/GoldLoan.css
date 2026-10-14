@@ -1,0 +1,324 @@
+
+.gold-loan-page {
+  min-height: 100vh;
+  background: #f4f6fa;
+  color: #192b45;
+  font-family: Inter, "Segoe UI", Arial, sans-serif;
+}
+
+.express-header {
+  min-height: 76px;
+  padding: 0 7%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  border-bottom: 1px solid #e7eaf0;
+}
+
+.express-logo {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  font-size: 19px;
+  font-weight: 750;
+  letter-spacing: -0.5px;
+}
+
+.express-logo-mark {
+  display: grid;
+  place-items: center;
+  width: 37px;
+  height: 37px;
+  border-radius: 10px;
+  background: #173f78;
+  color: #fff;
+  font-size: 20px;
+}
+
+.express-header-label {
+  color: #536780;
+  font-size: 11px;
+  font-weight: 750;
+  letter-spacing: 1.5px;
+}
+
+.express-content {
+  width: min(1100px, 88%);
+  min-height: calc(100vh - 140px);
+  margin: auto;
+  padding: 65px 0;
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  align-items: center;
+  gap: 85px;
+}
+
+.express-eyebrow {
+  color: #2862a5;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+.express-intro h1 {
+  margin: 18px 0;
+  color: #152a47;
+  font-size: clamp(38px, 5vw, 56px);
+  line-height: 1.1;
+  letter-spacing: -2px;
+}
+
+.express-intro > p {
+  max-width: 430px;
+  color: #66768b;
+  font-size: 16px;
+  line-height: 1.8;
+}
+
+.express-benefits {
+  display: grid;
+  gap: 26px;
+  margin-top: 42px;
+}
+
+.express-benefit {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+}
+
+.express-check {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #e1ebf8;
+  color: #235b99;
+  font-weight: 800;
+}
+
+.express-benefit strong {
+  display: block;
+  margin: 2px 0 5px;
+  font-size: 14px;
+}
+
+.express-benefit p {
+  margin: 0;
+  color: #748196;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.express-card {
+  padding: 36px;
+  border: 1px solid #e8edf4;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 18px 55px rgb(28 50 80 / 8%);
+}
+
+.express-card-icon {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 13px;
+  background: #eaf1fb;
+  color: #234f86;
+  font-size: 27px;
+}
+
+.express-card h2 {
+  margin: 25px 0 9px;
+  font-size: 25px;
+  letter-spacing: -0.7px;
+}
+
+.express-card-subtitle {
+  margin: 0 0 27px;
+  color: #7a8799;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.express-card form {
+  display: grid;
+  gap: 11px;
+}
+
+.express-card label {
+  color: #34445b;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.express-card input {
+  box-sizing: border-box;
+  width: 100%;
+  height: 51px;
+  padding: 0 15px;
+  border: 1px solid #dce3ec;
+  border-radius: 8px;
+  outline: none;
+  background: #fff;
+  color: #192b45;
+  font: inherit;
+  font-size: 14px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.express-card input:focus {
+  border-color: #3569a6;
+  box-shadow: 0 0 0 3px rgb(53 105 166 / 12%);
+}
+
+.express-card input::placeholder {
+  color: #a0aab8;
+}
+
+.express-card button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  min-height: 52px;
+  margin-top: 9px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 8px;
+  background: #19477e;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.express-card button:hover {
+  background: #123762;
+  transform: translateY(-1px);
+}
+
+.express-card button span {
+  font-size: 20px;
+}
+
+.express-demo-notice {
+  margin-top: 26px;
+  padding: 15px;
+  border: 1px solid #e1e9f4;
+  border-radius: 9px;
+  background: #f5f8fc;
+}
+
+.express-demo-notice strong {
+  font-size: 12px;
+}
+
+.express-demo-notice p {
+  margin: 7px 0 0;
+  color: #66768b;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.express-message {
+  padding: 12px;
+  border-radius: 8px;
+  background: #edf5ff;
+  color: #19477e;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.express-secure-note {
+  margin: 22px 0 0;
+  color: #7c8999;
+  font-size: 11px;
+  line-height: 1.7;
+  text-align: center;
+}
+
+.express-secure-note span {
+  margin-right: 4px;
+}
+
+.express-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 20px 7%;
+  border-top: 1px solid #e4e9f0;
+  background: #fff;
+  color: #7c8999;
+  font-size: 11px;
+}
+
+@media (max-width: 800px) {
+  .express-content {
+    width: min(520px, 88%);
+    min-height: auto;
+    padding: 45px 0;
+    grid-template-columns: 1fr;
+    gap: 35px;
+  }
+
+  .express-intro h1 {
+    font-size: 42px;
+  }
+
+  .express-benefits {
+    gap: 19px;
+    margin-top: 28px;
+  }
+
+  .express-card {
+    padding: 27px;
+  }
+}
+
+@media (max-width: 480px) {
+  .express-header {
+    min-height: 65px;
+    padding: 0 5%;
+  }
+
+  .express-logo {
+    font-size: 16px;
+  }
+
+  .express-header-label {
+    font-size: 9px;
+    letter-spacing: 0.7px;
+  }
+
+  .express-content {
+    width: 90%;
+    padding: 35px 0;
+  }
+
+  .express-intro h1 {
+    font-size: 37px;
+  }
+
+  .express-card {
+    padding: 22px;
+    border-radius: 13px;
+  }
+
+  .express-footer {
+    flex-direction: column;
+    padding: 18px 5%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .express-card input,
+  .express-card button {
+    transition: none;
+  }
+}

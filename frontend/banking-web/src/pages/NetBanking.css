@@ -1,0 +1,266 @@
+.nb-page {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  font-family: inherit;
+  color: #14202e;
+  background: #fff;
+}
+
+/* ---------- left panel ---------- */
+.nb-aside {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 36px 56px;
+  color: #fff;
+  background: linear-gradient(160deg, #0a1f44 0%, #123a78 60%, #1b5bb0 100%);
+  overflow: hidden;
+}
+.nb-aside::after {
+  content: "";
+  position: absolute;
+  right: -120px;
+  top: 18%;
+  width: 380px;
+  height: 380px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+}
+.nb-back {
+  color: #cfe0ff;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  z-index: 1;
+}
+.nb-back:hover { color: #fff; }
+
+.nb-aside-body { z-index: 1; max-width: 440px; }
+.nb-aside-body h2 {
+  margin: 0 0 12px;
+  font-size: 36px;
+  line-height: 1.15;
+}
+.nb-aside-body p { margin: 0 0 32px; color: #cfe0ff; font-size: 16px; }
+
+.nb-steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 22px; }
+.nb-steps li { display: flex; gap: 14px; align-items: flex-start; }
+.nb-steps li > span {
+  flex: none;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  background: #fff;
+  color: #123a78;
+}
+.nb-steps strong { display: block; font-size: 16px; }
+.nb-steps small { color: #b9cdf0; font-size: 13px; }
+
+.nb-aside-card {
+  z-index: 1;
+  align-self: flex-start;
+  display: grid;
+  gap: 10px;
+  width: 270px;
+  padding: 18px 20px;
+  border-radius: 14px;
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+.nb-aside-mark {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  background: #fff;
+  color: #123a78;
+}
+.nb-aside-dots { font-size: 15px; letter-spacing: 3px; }
+
+/* ---------- right panel ---------- */
+.nb-main {
+  display: grid;
+  place-items: center;
+  padding: 32px 24px;
+  overflow-y: auto;
+}
+.nb-panel { width: 100%; max-width: 400px; }
+
+.nb-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 800;
+  font-size: 22px;
+  color: #123a78;
+  margin-bottom: 8px;
+}
+.nb-logo-mark {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  background: #1f6fbf;
+  color: #fff;
+}
+.nb-panel h1 { margin: 0 0 22px; font-size: 26px; }
+
+/* tabs */
+.nb-tabs { display: flex; border-bottom: 1px solid #dfe5ec; margin-bottom: 22px; }
+.nb-tabs button {
+  flex: 1;
+  background: none;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  padding: 12px 6px;
+  font: inherit;
+  font-size: 15px;
+  cursor: pointer;
+  color: #14202e;
+}
+.nb-tabs button.active {
+  color: #1f4fd8;
+  font-weight: 600;
+  border-bottom-color: #1f4fd8;
+}
+
+/* qr card */
+.nb-qr-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px;
+  border: 1px solid #dfe7f5;
+  border-radius: 8px;
+  background: #f4f7fd;
+}
+.nb-qr-icon {
+  width: 52px;
+  height: 52px;
+  flex: none;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  font-size: 28px;
+  background: #fff;
+  border: 1px solid #dfe7f5;
+  color: #1f4fd8;
+}
+.nb-qr-card strong { display: block; font-size: 15px; }
+.nb-qr-card em {
+  font-style: normal;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 6px;
+  margin-left: 6px;
+  border-radius: 3px;
+  background: #eef0f4;
+  color: #5b6877;
+}
+.nb-qr-card small { color: #5b6877; font-size: 13px; }
+
+.nb-or { display: flex; align-items: center; gap: 14px; margin: 22px 0; color: #5b6877; }
+.nb-or::before,
+.nb-or::after { content: ""; flex: 1; height: 1px; background: #dfe5ec; }
+
+/* form */
+.nb-panel form label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 8px;
+  font-size: 15px;
+}
+.nb-panel form input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px 14px;
+  font: inherit;
+  font-size: 15px;
+  border: 1px solid #aeb8c4;
+  border-radius: 8px;
+  background: #fff;
+  color: #14202e;
+}
+.nb-panel form input:focus {
+  outline: 2px solid #1f4fd8;
+  outline-offset: 1px;
+  border-color: #1f4fd8;
+}
+.nb-link { display: inline-block; margin-top: 12px; color: #1f4fd8; font-weight: 600; text-decoration: none; }
+.nb-link:hover { text-decoration: underline; }
+
+.nb-user-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  font-size: 14px;
+  color: #5b6877;
+}
+.nb-pass { position: relative; }
+.nb-pass input { padding-right: 64px; }
+.nb-pass .nb-link-button { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); }
+.nb-link-button {
+  background: none;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1f4fd8;
+  cursor: pointer;
+}
+
+.nb-error { margin: 12px 0 0; color: #c81d23; font-size: 14px; }
+
+.nb-submit {
+  width: 100%;
+  margin-top: 28px;
+  padding: 14px;
+  border: 0;
+  border-radius: 6px;
+  font: inherit;
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  background: #1f4fd8;
+  cursor: pointer;
+}
+.nb-submit:hover:not(:disabled) { background: #173fb0; }
+.nb-submit:disabled { opacity: 0.65; cursor: wait; }
+
+.nb-register { margin: 18px 0 0; color: #5b6877; padding-bottom: 20px; border-bottom: 1px solid #dfe5ec; }
+.nb-register a { color: #1f4fd8; font-weight: 700; text-decoration: none; }
+
+.nb-security { display: flex; align-items: center; gap: 14px; margin-top: 20px; }
+.nb-shield {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  color: #1f4fd8;
+  border: 3px solid #1f4fd8;
+}
+.nb-security > div { display: grid; font-size: 15px; }
+.nb-security a { color: #1f4fd8; font-weight: 700; text-decoration: none; }
+
+.nb-legal { margin: 26px 0 0; font-size: 12px; color: #6b7785; }
+
+/* ---------- responsive ---------- */
+@media (max-width: 900px) {
+  .nb-page { grid-template-columns: 1fr; }
+  .nb-aside { display: none; }
+  .nb-main { padding: 24px 18px; }
+}

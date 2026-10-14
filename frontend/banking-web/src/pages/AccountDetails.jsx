@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { AccountApi, TransactionApi } from "../api/api";
 import { useAuth } from "../auth/AuthContext";
 import StatusBadge from "../components/StatusBadge";
@@ -18,9 +18,11 @@ export default function AccountDetails() {
   const [actionError, setActionError] = useState(null);
   const [actionMessage, setActionMessage] = useState(null);
 
+  const navigate = useNavigate();
+
   const load = useCallback(() => {
     AccountApi.get(accountNumber).then((res) => setAccount(res.data)).catch(() => setLoadError("Account not found."));
-    TransactionApi.history(accountNumber).then((res) => setHistory(res.data)).catch(() => {});
+    TransactionApi.history(accountNumber).then((res) => setHistory(res.data)).catch(() => { });
   }, [accountNumber]);
 
   useEffect(() => { load(); }, [load]);
@@ -54,6 +56,26 @@ export default function AccountDetails() {
 
   return (
     <div>
+      <div style={{ marginBottom: 20 }}>
+        <button
+          type="button"
+          onClick={() => navigate(-1)}
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 8,
+            padding: "9px 16px",
+            border: "1px solid #d1d5db",
+            borderRadius: 8,
+            background: "#ffffff",
+            color: "#334155",
+            fontWeight: 600,
+            cursor: "pointer",
+          }}
+        >
+          ← Back to Accounts
+        </button>
+      </div>
       <h2>Account {account.accountNumber}</h2>
       <div className="balance-card">
         <span className="stat-label">Available Balance</span>
@@ -68,10 +90,10 @@ export default function AccountDetails() {
       <div className="two-col">
         <form className="form form-inline" onSubmit={handleDeposit}>
           <label>Deposit Amount
-            <input type="number" min="0.01" step="0.01" value={depositAmount}
+            <input type="number" min="0.05" step="0.01" value={depositAmount}
               onChange={(e) => setDepositAmount(e.target.value)} required />
           </label>
-          <button type="submit">Deposit</button>
+          <button type="submit" style={{alignSelf: "flex-end"}}>Deposit</button>
         </form>
 
         <form className="form form-inline" onSubmit={handleWithdraw}>
@@ -79,7 +101,7 @@ export default function AccountDetails() {
             <input type="number" min="0.01" step="0.01" value={withdrawAmount}
               onChange={(e) => setWithdrawAmount(e.target.value)} required />
           </label>
-          <button type="submit">Withdraw</button>
+          <button type="submit" style={{alignSelf: "flex-end"}}>Withdraw</button>
         </form>
       </div>
 
